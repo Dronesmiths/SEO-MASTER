@@ -1,0 +1,35 @@
+{
+    "pillars": [
+        {
+            "name": "E-A-T Strategy",
+            "slug": "eat-strategy",
+            "url": "/blog/eat-strategy/",
+            "target_support_pages": 40,
+            "support_page_types": [
+                "how-to",
+                "faq",
+                "checklist"
+            ]
+        },
+        {
+            "name": "Local SEO Optimization",
+            "slug": "local-seo",
+            "url": "/blog/local-seo/",
+            "target_support_pages": 40,
+            "support_page_types": [
+                "how-to",
+                "case-study"
+            ]
+        },
+        {
+            "name": "Technical Site Architecture",
+            "slug": "technical-seo",
+            "url": "/blog/technical-seo/",
+            "target_support_pages": 40,
+            "support_page_types": [
+                "checklist",
+                "guide"
+            ]
+        }
+    ]
+}

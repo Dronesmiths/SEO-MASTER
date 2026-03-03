@@ -1,0 +1,19 @@
+{
+    "mode": "manual",
+    "auto_expand": false,
+    "auto_sitemap_sync": true,
+    "reinforcement_threshold": 15,
+    "domain": "https://example.com",
+    "base_path": "/blog",
+    "geo_intent_keywords": [
+        "near me",
+        "in",
+        "at",
+        "services",
+        "company",
+        "provider"
+    ],
+    "max_new_locations_per_run": 3,
+    "max_new_services_per_location": 5,
+    "geo_radius_limit_miles": 40
+}

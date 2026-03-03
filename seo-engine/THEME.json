@@ -1,0 +1,20 @@
+{
+    "layout": {
+        "hero_section_class": "hero-section",
+        "container_class": "container",
+        "content_class": "content-area"
+    },
+    "cta": {
+        "button_class": "btn-primary",
+        "wrapper_class": "cta-wrapper"
+    },
+    "visuals": {
+        "stat_grid_class": "stat-grid",
+        "stat_card_class": "stat-card",
+        "table_class": "data-table"
+    },
+    "colors": {
+        "primary": "#1a73e8",
+        "secondary": "#111111"
+    }
+}

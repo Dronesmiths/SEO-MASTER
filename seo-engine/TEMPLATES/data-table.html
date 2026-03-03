@@ -1,0 +1,20 @@
+<!-- START:REGION:DATA-TABLE -->
+<table class="{{table_class}}" style="width: 100%; border-collapse: collapse; margin: 30px 0; font-family: sans-serif;">
+    <thead>
+        <tr style="background-color: #f4f4f4; border-bottom: 2px solid #eee;">
+            {{#headers}}
+            <th style="padding: 12px; text-align: left; font-weight: bold; border: 1px solid #eee;">{{label}}</th>
+            {{/headers}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#rows}}
+        <tr style="border-bottom: 1px solid #eee;">
+            {{#cells}}
+            <td style="padding: 12px; border: 1px solid #eee;">{{value}}</td>
+            {{/cells}}
+        </tr>
+        {{/rows}}
+    </tbody>
+</table>
+<!-- END:REGION:DATA-TABLE -->

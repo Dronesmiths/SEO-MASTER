@@ -1,0 +1,17 @@
+[
+    {
+        "city": "Los Angeles",
+        "state": "CA",
+        "slug": "los-angeles-ca"
+    },
+    {
+        "city": "Palmdale",
+        "state": "CA",
+        "slug": "palmdale-ca"
+    },
+    {
+        "city": "Quartz Hill",
+        "state": "CA",
+        "slug": "quartz-hill-ca"
+    }
+]

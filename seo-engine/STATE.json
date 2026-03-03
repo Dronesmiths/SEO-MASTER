@@ -1,0 +1,17 @@
+{
+    "weekly_focus_slug": "eat-strategy",
+    "daily_limit": 2,
+    "rotation_slugs": [
+        "eat-strategy",
+        "local-seo",
+        "technical-seo"
+    ],
+    "support_counts": {
+        "eat-strategy": 2,
+        "local-seo": 0,
+        "technical-seo": 0
+    },
+    "last_run": "2026-02-20",
+    "rotation_mode": "manual",
+    "rotation_rule": "rotate after 7 days or 10 support pages"
+}

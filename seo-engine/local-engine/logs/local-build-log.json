@@ -1,0 +1,34 @@
+{
+  "builds": [
+    {
+      "url": "/los-angeles-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.822Z"
+    },
+    {
+      "url": "/los-angeles-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.823Z"
+    },
+    {
+      "url": "/palmdale-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/palmdale-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/quartz-hill-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/quartz-hill-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    }
+  ]
+}
