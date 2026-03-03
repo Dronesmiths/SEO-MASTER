@@ -3,6 +3,6 @@
     "domain": "https://example.com",
     "base_path": "/newsletter",
     "lock_ttl_minutes": 30,
-    "google_sheet_id": "",
+    "google_sheet_id": "1oqN0tKGId4mchnWJTR72EHxeK-ZOVYUVVg3qnDvp-Ik",
     "google_sheet_tab_name": "Inventory"
 }

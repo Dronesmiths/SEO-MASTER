@@ -30,10 +30,14 @@ Drop the `seo-engine` folder into your project root and run:
 npm install
 ```
 
-### 2. Configure
-Update `local-config.json` and `blog-config.json` with your:
+### 2. Configure (Optional)
+The template comes with a **Master SEO Sheet** pre-configured for instant testing. 
+To use your own client sheet, update `local-config.json`, `blog-config.json`, and `newsletter-config.json` with your:
 - `domain`
-- `google_sheet_id` (Share sheet with the service account)
+- `google_sheet_id` (Share sheet with the service account below)
+
+**Service Account Email:**
+`seo-engine-access@endless-terra-488018.iam.gserviceaccount.com`
 
 ### 3. Run Commands
 

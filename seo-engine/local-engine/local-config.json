@@ -19,6 +19,6 @@
     "geo_radius_limit_miles": 40,
     "lock_ttl_minutes": 30,
     "assisted_min_keyword_hits": 3,
-    "google_sheet_id": "",
+    "google_sheet_id": "1oqN0tKGId4mchnWJTR72EHxeK-ZOVYUVVg3qnDvp-Ik",
     "google_sheet_tab_name": "Inventory"
 }
