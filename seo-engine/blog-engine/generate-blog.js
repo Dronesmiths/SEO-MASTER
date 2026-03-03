@@ -116,7 +116,7 @@ async function build() {
         syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-blog.xml');
 
         // Sync with Google Sheets
-        const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "SEO");
+        const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Blogs");
         if (newId && newId !== CONFIG.google_sheet_id) {
             CONFIG.google_sheet_id = newId;
             fs.writeFileSync(path.join(BASE_DIR, 'blog-config.json'), JSON.stringify(CONFIG, null, 4));

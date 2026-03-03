@@ -4,10 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Syncs pages from sitemaps to a dedicated Google Sheet.
+ * Syncs pages from sitemaps to a specific tab in a Google Sheet.
  * If config.google_sheet_id is missing, it creates a new Sheet and returns the ID.
  */
-async function syncToGoogleSheets(config, siteRoot, suffix = "Inventory") {
+async function syncToGoogleSheets(config, siteRoot, tabName = "Inventory") {
     const BASE_DIR = __dirname;
     const COMPANY_PATH = path.join(BASE_DIR, 'COMPANY.json');
     let companyName = "SEO Engine";
@@ -37,39 +37,45 @@ async function syncToGoogleSheets(config, siteRoot, suffix = "Inventory") {
 
         // --- AUTO-CREATE SHEET IF MISSING ---
         if (!sheetId) {
-            const sheetName = `${companyName} (${suffix})`;
-            console.log(`[Google Sheets] No ID found. Creating new sheet: "${sheetName}"...`);
+            const spreadsheetName = `${companyName} Master SEO`;
+            console.log(`[Google Sheets] No ID found. Creating new spreadsheet: "${spreadsheetName}"...`);
 
-            // We use the Drive API to create a new spreadsheet file
             const res = await auth.request({
                 url: 'https://www.googleapis.com/drive/v3/files',
                 method: 'POST',
                 data: {
-                    name: sheetName,
+                    name: spreadsheetName,
                     mimeType: 'application/vnd.google-apps.spreadsheet'
                 }
             });
 
             sheetId = res.data.id;
-            console.log(`[Google Sheets] Created new sheet with ID: ${sheetId}`);
-            console.log(`[Google Sheets] URL: https://docs.google.com/spreadsheets/d/${sheetId}`);
-            console.log(`[IMPORTANT] Ensure you share this sheet or give the service account owner permissions if manually managing.`);
+            console.log(`[Google Sheets] Created new spreadsheet with ID: ${sheetId}`);
         }
 
         const doc = new GoogleSpreadsheet(sheetId, auth);
         await doc.loadInfo();
 
-        const sheetTitle = config.google_sheet_tab_name || 'Inventory';
+        const sheetTitle = tabName;
         let sheet = doc.sheetsByTitle[sheetTitle];
         if (!sheet) {
-            console.log(`Creating sheet: ${sheetTitle}`);
+            console.log(`Creating tab: ${sheetTitle}`);
             sheet = await doc.addSheet({
                 title: sheetTitle,
-                headerValues: ['Slug', 'URL', 'Source', 'LastUpdated']
+                headerValues: ['Slug', 'URL', 'Type', 'LastUpdated']
             });
         }
 
-        // --- COLLECT PAGES FROM ALL SITEMAPS ---
+        // --- COLLECT PAGES FROM SITEMAPS ---
+        // Map tab names to sitemap sources for filtering
+        const sourceMap = {
+            'Locations': 'local',
+            'Blogs': 'blog',
+            'Newsletters': 'newsletter',
+            'Core': 'core'
+        };
+
+        const targetSource = sourceMap[tabName];
         const allPages = [];
 
         const maps = [
@@ -80,6 +86,9 @@ async function syncToGoogleSheets(config, siteRoot, suffix = "Inventory") {
         ];
 
         for (const map of maps) {
+            // If we have a target source, only process that sitemap
+            if (targetSource && map.source !== targetSource) continue;
+
             const fullPath = path.join(siteRoot, map.path);
             if (fs.existsSync(fullPath)) {
                 const content = fs.readFileSync(fullPath, 'utf8');
@@ -100,18 +109,18 @@ async function syncToGoogleSheets(config, siteRoot, suffix = "Inventory") {
             .map(p => ({
                 Slug: p.url.split('/').filter(Boolean).pop() || '/',
                 URL: p.url,
-                Source: p.source,
+                Type: p.source,
                 LastUpdated: new Date().toISOString()
             }));
 
         if (newRows.length > 0) {
-            console.log(`[${suffix}] Syncing ${newRows.length} new sitemap entries to Google Sheets...`);
+            console.log(`[${tabName}] Syncing ${newRows.length} new entries to Google Sheets...`);
             await sheet.addRows(newRows);
         } else {
-            console.log(`[${suffix}] Google Sheets Inventory is up to date.`);
+            console.log(`[${tabName}] Tab is up to date.`);
         }
 
-        return sheetId; // Return ID in case it was newly created
+        return sheetId;
 
     } catch (err) {
         console.error('Google Sheets Sync Failed:', err.message);

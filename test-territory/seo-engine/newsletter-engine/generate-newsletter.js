@@ -110,7 +110,7 @@ async function build() {
         syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-newsletter.xml');
 
         // Sync Sheets
-        const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Newsletter");
+        const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Newsletters");
         if (newId && newId !== CONFIG.google_sheet_id) {
             CONFIG.google_sheet_id = newId;
             fs.writeFileSync(path.join(BASE_DIR, 'newsletter-config.json'), JSON.stringify(CONFIG, null, 4));
