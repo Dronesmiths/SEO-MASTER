@@ -189,6 +189,26 @@
       "url": "/test-city-h/svc-3/",
       "type": "city-service",
       "timestamp": "2026-03-03T05:26:15.668Z"
+    },
+    {
+      "url": "/test-city-i/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:44:19.934Z"
+    },
+    {
+      "url": "/test-city-i/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:44:19.935Z"
+    },
+    {
+      "url": "/test-city-i/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:44:19.935Z"
+    },
+    {
+      "url": "/test-city-i/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:44:19.935Z"
     }
   ]
 }

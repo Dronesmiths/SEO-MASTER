@@ -152,4 +152,20 @@
     <loc>https://example.com/test-city-h/svc-3/</loc>
     <lastmod>2026-03-03</lastmod>
   </url>
+  <url>
+    <loc>https://example.com/test-city-i/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-i/svc-1/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-i/svc-2-mixed/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-i/svc-3/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
 </urlset>

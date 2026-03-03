@@ -20,7 +20,7 @@ function validateJson(filePath) {
 
 function runValidation() {
     console.log('--- Starting Local SEO Engine Validation ---');
-    
+
     const files = [CONFIG_PATH, LOCATIONS_PATH, SERVICES_PATH, BUILD_MAP_PATH];
     let allValid = true;
 
@@ -40,26 +40,42 @@ function runValidation() {
         process.exit(1);
     }
 
-    // Check for duplicate slugs in locations
+    // Check for duplicate/colliding slugs in locations
     const locations = JSON.parse(fs.readFileSync(LOCATIONS_PATH, 'utf8'));
     const locationSlugs = new Set();
+    const normalizedLocSlugs = new Set();
+
     locations.forEach(loc => {
+        const nSlug = loc.slug.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
         if (locationSlugs.has(loc.slug)) {
-            console.error(`Error: Duplicate location slug found: ${loc.slug}`);
+            console.error(`Error: Duplicate raw location slug: ${loc.slug}`);
+            allValid = false;
+        }
+        if (normalizedLocSlugs.has(nSlug)) {
+            console.error(`Error: Normalized location slug collision: ${nSlug}`);
             allValid = false;
         }
         locationSlugs.add(loc.slug);
+        normalizedLocSlugs.add(nSlug);
     });
 
-    // Check for duplicate slugs in services
+    // Check for duplicate/colliding slugs in services
     const services = JSON.parse(fs.readFileSync(SERVICES_PATH, 'utf8'));
     const serviceSlugs = new Set();
+    const normalizedSvcSlugs = new Set();
+
     services.forEach(svc => {
+        const nSlug = svc.slug.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
         if (serviceSlugs.has(svc.slug)) {
-            console.error(`Error: Duplicate service slug found: ${svc.slug}`);
+            console.error(`Error: Duplicate raw service slug: ${svc.slug}`);
+            allValid = false;
+        }
+        if (normalizedSvcSlugs.has(nSlug)) {
+            console.error(`Error: Normalized service slug collision: ${nSlug}`);
             allValid = false;
         }
         serviceSlugs.add(svc.slug);
+        normalizedSvcSlugs.add(nSlug);
     });
 
     if (allValid) {

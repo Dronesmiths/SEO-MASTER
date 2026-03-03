@@ -38,5 +38,10 @@
         "city": "Test City H",
         "state": "CA",
         "slug": "test-city-h"
+    },
+    {
+        "city": "Test City I",
+        "state": "CA",
+        "slug": "test-city-i"
     }
 ]

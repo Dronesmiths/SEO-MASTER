@@ -17,9 +17,15 @@ const SITE_ROOT = path.join(BASE_DIR, '..', '..');
 const LOCK_FILE = path.join(BASE_DIR, '.build-lock');
 const SITEMAP_HASH_PATH = path.join(BASE_DIR, 'logs', 'sitemap-hash.txt');
 
+const DRY_RUN = process.argv.includes('--dry-run');
+
 // --- UTILS ---
 
 function writeAtomic(filePath, content) {
+    if (DRY_RUN) {
+        console.log(`[DRY RUN] Would write to: ${filePath}`);
+        return;
+    }
     const tmpPath = filePath + '.tmp';
     fs.writeFileSync(tmpPath, content);
     fs.renameSync(tmpPath, filePath);
@@ -149,7 +155,9 @@ function writePlaceholder(dir, url, title, h1) {
 }
 
 function build() {
-    if (fs.existsSync(LOCK_FILE)) {
+    if (DRY_RUN) console.log('*** DRY RUN MODE: No files will be written ***');
+
+    if (!DRY_RUN && fs.existsSync(LOCK_FILE)) {
         const lockTime = parseInt(fs.readFileSync(LOCK_FILE, 'utf8'));
         const ageInMinutes = (Date.now() - lockTime) / (1000 * 60);
         const ttl = CONFIG.lock_ttl_minutes || 30;
@@ -162,14 +170,16 @@ function build() {
             fs.unlinkSync(LOCK_FILE);
         }
     }
-    fs.writeFileSync(LOCK_FILE, Date.now().toString());
+
+    if (!DRY_RUN) fs.writeFileSync(LOCK_FILE, Date.now().toString());
 
     const summary = {
         date: new Date().toISOString().split('T')[0],
         new_cities: 0,
         new_services: 0,
         skipped_duplicates: 0,
-        skipped_low_intent: 0,
+        skipped_low_intent: [],
+        skipped_collisions: [],
         errors: []
     };
 
@@ -186,11 +196,19 @@ function build() {
         let locationsInRun = 0;
         const maxLocations = CONFIG.max_new_locations_per_run || 3;
 
+        const seenSlugs = new Set();
+
         for (const loc of LOCATIONS) {
             if (totalPagesBuiltInRun >= maxTotalPages) break;
             if (locationsInRun >= maxLocations) break;
 
             const nCitySlug = normalizeSlug(loc.slug);
+            if (seenSlugs.has(nCitySlug)) {
+                console.warn(`Collision detected: Slug ${nCitySlug} already processed this run. Check locations.json.`);
+                summary.skipped_collisions.push(nCitySlug);
+                continue;
+            }
+            seenSlugs.add(nCitySlug);
             if (nCitySlug !== loc.slug) {
                 console.warn(`Normalized slug: ${loc.slug} -> ${nCitySlug}`);
             }
@@ -201,7 +219,7 @@ function build() {
 
             if (CONFIG.mode !== 'manual' && hits < minHits) {
                 console.log(`Skipping ${loc.city}: Low keyword hits (${hits}/${minHits})`);
-                summary.skipped_low_intent++;
+                summary.skipped_low_intent.push(`${loc.city} (${hits}/${minHits})`);
                 continue;
             }
 
@@ -214,7 +232,7 @@ function build() {
             if (existingUrls.has(cityUrl)) {
                 summary.skipped_duplicates++;
             } else if (totalPagesBuiltInRun < maxTotalPages) {
-                console.log(`Building: ${cityUrl}`);
+                console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityUrl}`);
                 writePlaceholder(path.join(SITE_ROOT, nCitySlug), cityUrl, `${loc.city}, ${loc.state}`, `${loc.city} Local Services`);
                 buildLog.builds.push({ url: cityUrl, type: 'location', timestamp: new Date().toISOString() });
                 newUrls.push(cityUrl);
@@ -241,7 +259,7 @@ function build() {
                 if (existingUrls.has(cityServiceUrl)) {
                     summary.skipped_duplicates++;
                 } else {
-                    console.log(`Building: ${cityServiceUrl}`);
+                    console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityServiceUrl}`);
                     writePlaceholder(path.join(SITE_ROOT, nCitySlug, nSvcSlug), cityServiceUrl, `${svc.name} in ${loc.city}, ${loc.state}`, `${svc.name} - ${loc.city}`);
                     buildLog.builds.push({ url: cityServiceUrl, type: 'city-service', timestamp: new Date().toISOString() });
                     newUrls.push(cityServiceUrl);
@@ -277,7 +295,7 @@ function build() {
         console.error('Build failed:', err.message);
         summary.errors.push(err.message);
     } finally {
-        if (fs.existsSync(LOCK_FILE)) {
+        if (!DRY_RUN && fs.existsSync(LOCK_FILE)) {
             fs.unlinkSync(LOCK_FILE);
         }
     }

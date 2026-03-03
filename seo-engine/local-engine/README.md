@@ -29,20 +29,36 @@ The Local SEO Engine is a modular extension for the SEO Factory. It provides the
 5. **Sitemap**: `sitemap-local.xml` is updated and synced with the root `sitemap.xml`.
 6. **Handoff**: Structured data is prepared for the Factory Engine.
 
-## Safety Rules
+## 🛡️ Safety & Hardening
 
-- **Zero Overwrite**: The engine will NEVER overwrite an existing page.
-- **Pre-check Integrity**: Validation must pass (checks JSON, duplicates, and physical exists) before any build.
-- **Region Locking**: All generated content must respect the `<!-- START:REGION:TAG -->` markers of the host template.
+This engine is equipped with 4 layers of "Future Brian" protection:
 
-## Expansion Strategy
+1.  **Build Lock**: `.build-lock` prevents concurrent runs. TTL: 30 mins (auto-clears stale locks).
+2.  **Atomic Writes**: All critical files are written to `.tmp` first, then renamed to ensure zero corruption if the process crashes.
+3.  **Strict Validation**: `validate.js` performs deep checks for malformed JSON and **normalized slug collisions** before any build starts.
+4.  **Dry Run Mode**: Run `node generate-local.js --dry-run` to simulate a build and verify keyword/slug logic without writing any files.
 
-- **Manual**: Add entries to `locations.json`.
-- **Assisted**: Engine reads keyword clusters to suggest new geo-targets.
-- **Auto**: Expansion to adjacent cities (configurable).
+## 🚀 Usage
 
-## Deployment
+### 1. Validate Configuration
+```bash
+node validate.js
+```
 
-1. Run validation: `node local-engine/validate.js`
-2. Run generation: `node local-engine/generate-local.js`
-3. Commit the updated `local-build-log.json` and `sitemap-local.xml`.
+### 2. Simulate Growth
+```bash
+node generate-local.js --dry-run
+```
+
+### 3. Execute Build
+```bash
+node generate-local.js
+```
+
+## 📊 Monitoring
+
+Check `logs/run-summary-YYYY-MM-DD.json` for a post-run report on:
+- New cities/services created.
+- Skipped duplicates.
+- Skipped low-intent keywords (assisted/auto mode).
+- Collision errors.
