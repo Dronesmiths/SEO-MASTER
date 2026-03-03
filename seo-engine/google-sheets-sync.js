@@ -34,23 +34,46 @@ async function syncToGoogleSheets(config, siteRoot, tabName = "Inventory") {
         });
 
         let sheetId = config.google_sheet_id;
+        const SHARED_ID_PATH = path.join(BASE_DIR, 'MASTER_SHEET_ID.json');
 
-        // --- AUTO-CREATE SHEET IF MISSING ---
-        if (!sheetId) {
-            const spreadsheetName = `${companyName} Master SEO`;
-            console.log(`[Google Sheets] No ID found. Creating new spreadsheet: "${spreadsheetName}"...`);
+        // --- AUTO-DISCOVER OR CREATE SHEET ---
+        // If sheetId is empty or the "demo" sheet ID, try to find a shared project ID
+        const isDemoId = sheetId === '1oqN0tKGId4mchnWJTR72EHxeK-ZOVYUVVg3qnDvp-Ik';
 
-            const res = await auth.request({
-                url: 'https://www.googleapis.com/drive/v3/files',
-                method: 'POST',
-                data: {
-                    name: spreadsheetName,
-                    mimeType: 'application/vnd.google-apps.spreadsheet'
+        if (!sheetId || isDemoId) {
+            if (fs.existsSync(SHARED_ID_PATH)) {
+                try {
+                    const sharedData = JSON.parse(fs.readFileSync(SHARED_ID_PATH, 'utf8'));
+                    sheetId = sharedData.google_sheet_id;
+                    console.log(`[Google Sheets] Found shared project sheet: ${sheetId}`);
+                } catch (e) {
+                    console.warn('[Google Sheets] Shared ID file corrupted.');
                 }
-            });
+            }
 
-            sheetId = res.data.id;
-            console.log(`[Google Sheets] Created new spreadsheet with ID: ${sheetId}`);
+            // Still no valid ID? Create it.
+            if (!sheetId || isDemoId) {
+                const spreadsheetName = `${companyName} Master SEO`;
+                console.log(`[Google Sheets] Zero-Config: Creating Master Spreadsheet "${spreadsheetName}"...`);
+
+                const res = await auth.request({
+                    url: 'https://www.googleapis.com/drive/v3/files',
+                    method: 'POST',
+                    data: {
+                        name: spreadsheetName,
+                        mimeType: 'application/vnd.google-apps.spreadsheet'
+                    }
+                });
+
+                sheetId = res.data.id;
+                console.log(`[Google Sheets] Created Master Sheet: ${sheetId}`);
+
+                // Save it locally so ALL engines in this project find it
+                fs.writeFileSync(SHARED_ID_PATH, JSON.stringify({
+                    google_sheet_id: sheetId,
+                    created_at: new Date().toISOString()
+                }, null, 4));
+            }
         }
 
         const doc = new GoogleSpreadsheet(sheetId, auth);
