@@ -1,0 +1,8 @@
+{
+    "mode": "manual",
+    "domain": "https://example.com",
+    "base_path": "/newsletter",
+    "lock_ttl_minutes": 30,
+    "google_sheet_id": "",
+    "google_sheet_tab_name": "Inventory"
+}

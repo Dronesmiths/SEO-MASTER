@@ -36,7 +36,7 @@ function normalizeSlug(slug) {
     return slug.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 
-function writePlaceholder(dir, url, title, pillar) {
+function writePlaceholder(dir, url, title, pillar, isCornerstone) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -44,11 +44,18 @@ function writePlaceholder(dir, url, title, pillar) {
     if (fs.existsSync(filePath)) return;
 
     let template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+
+    let footerGuidance = '';
+    if (isCornerstone) {
+        const guidanceUrl = `/newsletter/${normalizeSlug(title)}-guidance/`;
+        footerGuidance = `\n<div class="guidance-box">\n  <p>Need more practical guidance on this? <a href="${guidanceUrl}">Read our Client Newsletter for ${title}</a>.</p>\n</div>`;
+    }
+
     template = template.replace('{{TITLE}}', title)
         .replace('{{PILLAR}}', pillar)
         .replace('{{CANONICAL_URL}}', `${CONFIG.domain}${url}`)
         .replace('{{META_DESCRIPTION}}', `Read our latest guide on ${title} within the ${pillar} pillar.`)
-        .replace('{{BODY_CONTENT}}', '<!-- FACTORY:BODY_START -->\n<p>Drafting content for this blog post...</p>\n<!-- FACTORY:BODY_END -->');
+        .replace('{{BODY_CONTENT}}', `<!-- FACTORY:BODY_START -->\n<p>Drafting content for this blog post...</p>${footerGuidance}\n<!-- FACTORY:BODY_END -->`);
 
     writeAtomic(filePath, template);
 }
@@ -92,7 +99,8 @@ async function build() {
             if (!fs.existsSync(path.join(dir, 'index.html'))) {
                 if (newPostsCount < maxNew) {
                     console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${url}`);
-                    writePlaceholder(dir, url, page.title, page.pillar);
+                    const isCornerstone = page.type === 'cornerstone';
+                    writePlaceholder(dir, url, page.title, page.pillar, isCornerstone);
                     newPostsCount++;
                 }
             }

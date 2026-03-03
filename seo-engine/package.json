@@ -6,6 +6,7 @@
   "scripts": {
     "run:local": "node local-engine/generate-local.js",
     "run:blog": "node blog-engine/generate-blog.js",
+    "run:newsletter": "node newsletter-engine/generate-newsletter.js",
     "validate": "node local-engine/validate.js"
   },
   "dependencies": {
