@@ -18,5 +18,7 @@
     "max_total_new_pages_per_run": 25,
     "geo_radius_limit_miles": 40,
     "lock_ttl_minutes": 30,
-    "assisted_min_keyword_hits": 3
+    "assisted_min_keyword_hits": 3,
+    "google_sheet_id": "",
+    "google_sheet_tab_name": "Inventory"
 }

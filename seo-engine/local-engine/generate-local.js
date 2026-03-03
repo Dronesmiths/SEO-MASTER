@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { runValidation } = require('./validate');
+const { syncToGoogleSheets } = require('./google-sheets-sync');
 
 const BASE_DIR = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(BASE_DIR, 'local-config.json'), 'utf8'));
@@ -285,6 +286,7 @@ function build() {
             writeAtomic(SITEMAP_PATH, sitemapContent);
             writeAtomic(SITEMAP_HASH_PATH, getChecksum(sitemapContent));
             syncWithMasterSitemap();
+            await syncToGoogleSheets(CONFIG, BUILD_LOG_PATH);
         }
 
         const summaryPath = path.join(BASE_DIR, 'logs', `run-summary-${summary.date}.json`);
