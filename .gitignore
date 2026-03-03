@@ -1,1 +1,6 @@
 GOOGLE KEYS/
+**/logs/
+**/*.tmp
+**/.build-lock
+MASTER_SHEET_ID.json
+test-territory/

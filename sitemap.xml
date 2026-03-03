@@ -9,4 +9,10 @@
   <sitemap>
     <loc>https://example.com/sitemap-blog.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://example.com/sitemap-newsletter.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://casevals.com/sitemap-newsletter.xml</loc>
+  </sitemap>
 </sitemapindex>

@@ -1,6 +1,6 @@
 {
     "mode": "manual",
-    "domain": "https://example.com",
+    "domain": "https://casevals.com",
     "base_path": "/newsletter",
     "lock_ttl_minutes": 30,
     "google_sheet_id": "1oqN0tKGId4mchnWJTR72EHxeK-ZOVYUVVg3qnDvp-Ik",

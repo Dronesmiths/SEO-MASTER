@@ -5,42 +5,147 @@
             "url": "/blog/eat-strategy-checklist/",
             "title": "Essential E-A-T Checklist for 2026",
             "pillar": "eat-strategy",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "c0120d028e4385a9ea68fc5c25a86878b8c30010cf90dfa715ccc269d4df032d"
         },
         {
             "slug": "improving-eat-score",
             "url": "/blog/improving-eat-score/",
             "title": "How to Improve Your E-A-T Score",
             "pillar": "eat-strategy",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "8fe2e3b66cede425f00a14b42851376d804c0e2cfbaf85442e1d176987c64b79"
         },
         {
             "slug": "local-seo-visibility",
             "url": "/blog/local-seo-visibility/",
             "title": "Maximizing Local Visibility in 2026",
             "pillar": "local-seo",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "6fc7f4b13b2d1790e9613f3f96981770ec844b7d8bf5f1d11b731eba0d369883"
         },
         {
             "slug": "hyper-local-keywords",
             "url": "/blog/hyper-local-keywords/",
             "title": "Hyper-Local Keyword Mapping for 2026",
             "pillar": "local-seo",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "054ff0d62db2ee4dfcd7b88ae0d876ebedea7f167027e8c896189617750d99cd"
         },
         {
             "slug": "core-web-vitals-2026",
             "url": "/blog/core-web-vitals-2026/",
             "title": "Core Web Vitals Optimization Guide 2026",
             "pillar": "technical-seo",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "071b7cb2b556355b6c4e38b0647f4814540c9e86969c18c841b26eba83059887"
         },
         {
             "slug": "semantic-html-seo",
             "url": "/blog/semantic-html-seo/",
             "title": "Semantic HTML for Technical SEO 2026",
             "pillar": "technical-seo",
-            "created": "2026-02-20"
+            "created": "2026-02-20",
+            "skeleton_hash": "6b1d92dd6919c7e2805547787b6c3dc604da1188a30a02d5955ffd90094d93eb"
+        },
+        {
+            "slug": "california-special-education-staffing-crisis-2026",
+            "url": "/blog/california-special-education-staffing-crisis-2026.html",
+            "title": "Navigating the 2026 Special Education Staffing Crisis in California",
+            "pillar": "staff-training",
+            "created": "2026-02-28"
+        },
+        {
+            "slug": "restraint-seclusion-rights",
+            "url": "/resources/restraint-seclusion-rights/",
+            "title": "Restraint & Seclusion: Protecting Your Child’s Rights",
+            "pillar": "behavior-support",
+            "type": "cornerstone",
+            "newsletter": true,
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "functional-behavioral-assessment",
+            "url": "/resources/functional-behavioral-assessment/",
+            "title": "Functional Behavioral Assessment (FBA) & BIP Guide",
+            "pillar": "behavior-support",
+            "type": "cornerstone",
+            "newsletter": true,
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "behavioral-iee",
+            "url": "/resources/behavioral-iee/",
+            "title": "Behavioral IEE: Benefits & Parent Rights",
+            "pillar": "iee-rights",
+            "type": "cornerstone",
+            "newsletter": true,
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "psychoeducational-assessment-guide",
+            "url": "/resources/learning-disabilities/psychoeducational-assessment-guide/",
+            "title": "Psychoeducational Assessment Guide for Parents",
+            "pillar": "psychoeducational-sld",
+            "type": "cornerstone",
+            "newsletter": true,
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "dyslexia-dysgraphia-iee",
+            "url": "/resources/learning-disabilities/dyslexia-dysgraphia-iee/",
+            "title": "Dyslexia & Dysgraphia: The Hidden Academic Burden",
+            "pillar": "psychoeducational-sld",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "processing-deficits-explained",
+            "url": "/resources/learning-disabilities/processing-deficits-explained/",
+            "title": "Processing Deficits: The \"Filters\" of the Mind",
+            "pillar": "psychoeducational-sld",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "los-angeles-iee",
+            "url": "/locations/los-angeles/",
+            "title": "Independent Educational Evaluations in Los Angeles, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "san-diego-iee",
+            "url": "/locations/san-diego/",
+            "title": "Independent Educational Evaluations in San Diego, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "santa-monica-iee",
+            "url": "/locations/santa-monica/",
+            "title": "Independent Educational Evaluations in Santa Monica, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "pasadena-iee",
+            "url": "/locations/pasadena/",
+            "title": "Independent Educational Evaluations in Pasadena, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "long-beach-iee",
+            "url": "/locations/long-beach/",
+            "title": "Independent Educational Evaluations in Long Beach, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
+        },
+        {
+            "slug": "irvine-iee",
+            "url": "/locations/irvine/",
+            "title": "Independent Educational Evaluations in Irvine, CA",
+            "pillar": "iee-rights",
+            "created": "2026-03-02"
         }
     ]
 }
