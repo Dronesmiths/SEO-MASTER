@@ -26,7 +26,9 @@
         "show_live_map": true,
         "show_static_map": true,
         "show_street_view": true,
-        "show_directions": true
+        "show_directions": true,
+        "show_reviews": true
     },
+    "google_place_id": "ChIJj61Eb8ZwoARRO9z3B_Mt7m4",
     "business_address": "123 SEO Way, Los Angeles, CA 90001"
 }

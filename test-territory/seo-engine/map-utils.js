@@ -40,9 +40,21 @@ function generateDirectionsLink(destination, origin = '') {
     return `<a href="${url}" target="_blank" class="directions-button" style="display: inline-block; padding: 12px 24px; background: #4285F4; color: white; border-radius: 4px; text-decoration: none; font-weight: bold; margin-top: 10px;">Get Directions</a>`;
 }
 
+function generatePlaceReview(apiKey, placeId) {
+    if (!apiKey || !placeId) return '';
+    // Note: Standard embeds don't show specific reviews easily without Places JS library,
+    // but we can provide a "View Reviews" link that deep-links to the reviews tab.
+    const url = `https://search.google.com/local/reviews?placeid=${placeId}`;
+    return `<div class="reviews-cta" style="margin-top: 15px;">
+        <p>⭐ See what our customers are saying in this area!</p>
+        <a href="${url}" target="_blank" style="color: #4285F4; text-decoration: underline; font-weight: bold;">View our ${placeId ? 'verified' : ''} Google Reviews</a>
+    </div>`;
+}
+
 module.exports = {
     generateMapEmbed,
     generateStaticMap,
     generateStreetView,
-    generateDirectionsLink
+    generateDirectionsLink,
+    generatePlaceReview
 };

@@ -198,6 +198,7 @@ function writePlaceholder(dir, url, title, h1, locationString) {
         if (flags.show_static_map) mapHtml += maps.generateStaticMap(apiKey, locationString);
         if (flags.show_street_view) mapHtml += maps.generateStreetView(apiKey, locationString);
         if (flags.show_directions) mapHtml += maps.generateDirectionsLink(locationString, CONFIG.business_address);
+        if (flags.show_reviews && CONFIG.google_place_id) mapHtml += maps.generatePlaceReview(apiKey, CONFIG.google_place_id);
     }
 
     template = template.replace('{{TITLE}}', title)
