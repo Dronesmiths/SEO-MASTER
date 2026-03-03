@@ -1,40 +1,60 @@
-# SEO Engine
+# 🚀 Master SEO Engine Template
 
-This is a portable SEO engine designed to be dropped into any repository. It works for S3/CloudFront, Wrangler, or any static build.
+This unified engine handles both **Local Geo-Targeting** and **Authority Blog/Cornerstone** content. It is designed to be dropped into any static project and run with minimal configuration.
 
-## Directory Structure
+## 🏗 System Structure
 
+```text
 /seo-engine/
-  README.md
-  COMPANY.json
-  PILLARS.json
-  RULES.md
-  STATE.json
-  REGISTRY.json
-  TASK_DAILY.md
-  TASK_WEEKLY.md
-  PROMPTS/
-    prompt_daily_generation.md
-    prompt_weekly_gsc_actions.md
-  TEMPLATES/
-    page-template.html
-    faq-template.html
-    internal-links-template.html
-  OUTPUT/
-    (empty)
+│
+├── package.json            # Unified dependencies and run scripts
+├── google-sheets-sync.js   # Shared inventory sync logic
+├── sitemap-utils.js        # Shared sitemap index management
+│
+├── local-engine/           # Focus: Cities, Services, Geo-intent
+│   ├── generate-local.js
+│   ├── locations.json
+│   └── local-config.json
+│
+└── blog-engine/            # Focus: Pillars, Posts, Cornerstone
+    ├── generate-blog.js
+    ├── blog-config.json
+    └── sitemap-blog.xml
+```
 
-## Initialization
+## 🚀 Usage
 
-To initialize the SEO Engine for a new company:
+### 1. Installation
+Drop the `seo-engine` folder into your project root and run:
+```bash
+npm install
+```
 
-1. Fill in `COMPANY.json`
-2. Fill in `PILLARS.json` (3 pillars)
-3. Set `STATE.json` (weekly focus + rotation)
+### 2. Configure
+Update `local-config.json` and `blog-config.json` with your:
+- `domain`
+- `google_sheet_id` (Share sheet with the service account)
 
-## Daily Execution
+### 3. Run Commands
 
-Run the instructions in `TASK_DAILY.md`.
+**Generate Local Geo-Pages:**
+```bash
+npm run run:local
+```
 
-## Weekly Execution
+**Generate Blog/Cornerstone Pages:**
+```bash
+npm run run:blog
+```
 
-Run the instructions in `TASK_WEEKLY.md`.
+**Validate Data Integrity:**
+```bash
+npm run validate
+```
+
+## 🛡️ Hardening Features
+- **Atomic Writes**: Zero file corruption on crash.
+- **Build Locking**: Prevents concurrent execution.
+- **Master Sitemap Index**: Automatically manages `sitemap-core`, `sitemap-local`, and `sitemap-blog`.
+- **GSC Strengthening**: Analyzes Search Console data to suggest new high-potential pages.
+- **Inventory Sync**: Real-time updates to a single shared Google Sheet.

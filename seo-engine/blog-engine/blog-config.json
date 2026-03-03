@@ -1,0 +1,11 @@
+{
+    "mode": "manual",
+    "auto_expand": false,
+    "auto_sitemap_sync": true,
+    "domain": "https://example.com",
+    "base_path": "/blog",
+    "max_new_posts_per_run": 5,
+    "lock_ttl_minutes": 30,
+    "google_sheet_id": "",
+    "google_sheet_tab_name": "Inventory"
+}

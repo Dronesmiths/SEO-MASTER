@@ -1,0 +1,15 @@
+{
+  "name": "master-seo-engine",
+  "version": "1.0.0",
+  "description": "Unified SEO Engine Template for Local and Blog content generation.",
+  "type": "commonjs",
+  "scripts": {
+    "run:local": "node local-engine/generate-local.js",
+    "run:blog": "node blog-engine/generate-blog.js",
+    "validate": "node local-engine/validate.js"
+  },
+  "dependencies": {
+    "google-auth-library": "^10.6.1",
+    "google-spreadsheet": "^5.2.0"
+  }
+}

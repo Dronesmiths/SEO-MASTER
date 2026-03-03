@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { runValidation } = require('./validate');
-const { syncToGoogleSheets } = require('./google-sheets-sync');
+const { syncToGoogleSheets } = require('../google-sheets-sync');
+const { syncWithMasterIndex } = require('../sitemap-utils');
 
 const BASE_DIR = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(BASE_DIR, 'local-config.json'), 'utf8'));
@@ -96,6 +97,7 @@ function syncWithMasterSitemap() {
         masterContent = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
             `  <sitemap>\n    <loc>${CONFIG.domain}/sitemap-core.xml</loc>\n  </sitemap>\n` +
             `  <sitemap>\n    <loc>${localSitemapUrl}</loc>\n  </sitemap>\n` +
+            `  <sitemap>\n    <loc>${CONFIG.domain}/sitemap-blog.xml</loc>\n  </sitemap>\n` +
             `</sitemapindex>`;
     }
 
@@ -132,6 +134,50 @@ function getKeywordHits(keyword, kwMap) {
     return hits;
 }
 
+const ANALYTICS_DIR = path.join(BASE_DIR, '..', 'ANALYTICS');
+const GSC_PULL_PATH = path.join(ANALYTICS_DIR, 'GSC_PULL.json');
+
+// --- GSC STRENGTHENING ---
+
+function strengthenWithGSC() {
+    console.log('--- Analyzing GSC Data for Strengthening Opportunities ---');
+    if (!fs.existsSync(GSC_PULL_PATH)) {
+        console.log('No GSC data found. Skipping.');
+        return [];
+    }
+
+    const gscData = JSON.parse(fs.readFileSync(GSC_PULL_PATH, 'utf8'));
+    const newOpportunities = [];
+
+    // Analyze top and rising queries for geo-intent
+    const queries = [...(gscData.top_queries || []), ...(gscData.rising_queries || [])];
+
+    queries.forEach(q => {
+        const query = typeof q === 'string' ? q : q.query;
+        if (!query) return;
+
+        if (hasGeoIntent(query)) {
+            // Extract city name (basic heuristic: last word or words after 'in'/'at')
+            let potentialCity = '';
+            if (query.includes(' in ')) potentialCity = query.split(' in ')[1];
+            else if (query.includes(' at ')) potentialCity = query.split(' at ')[1];
+            else potentialCity = query.split(' ').pop();
+
+            if (potentialCity && potentialCity.length > 3) {
+                const slug = normalizeSlug(potentialCity);
+                newOpportunities.push({
+                    city: potentialCity.charAt(0).toUpperCase() + potentialCity.slice(1),
+                    state: 'CA', // Default for now
+                    slug: slug,
+                    reason: `GSC Opportunity: ${query}`
+                });
+            }
+        }
+    });
+
+    return newOpportunities;
+}
+
 function writePlaceholder(dir, url, title, h1) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -155,7 +201,7 @@ function writePlaceholder(dir, url, title, h1) {
     writeAtomic(filePath, template);
 }
 
-function build() {
+async function build() {
     if (DRY_RUN) console.log('*** DRY RUN MODE: No files will be written ***');
 
     if (!DRY_RUN && fs.existsSync(LOCK_FILE)) {
@@ -183,6 +229,17 @@ function build() {
         skipped_collisions: [],
         errors: []
     };
+
+    // --- STEP 0: GSC STRENGTHENING ---
+    if (CONFIG.mode !== 'manual') {
+        const opportunities = strengthenWithGSC();
+        opportunities.forEach(opp => {
+            if (!LOCATIONS.find(l => normalizeSlug(l.slug) === opp.slug)) {
+                console.log(`[GSC] Found new opportunity: ${opp.city} (${opp.reason})`);
+                LOCATIONS.push(opp);
+            }
+        });
+    }
 
     try {
         runValidation();
@@ -285,8 +342,8 @@ function build() {
             writeAtomic(BUILD_LOG_PATH, JSON.stringify(buildLog, null, 2));
             writeAtomic(SITEMAP_PATH, sitemapContent);
             writeAtomic(SITEMAP_HASH_PATH, getChecksum(sitemapContent));
-            syncWithMasterSitemap();
-            await syncToGoogleSheets(CONFIG, BUILD_LOG_PATH);
+            syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-local.xml');
+            await syncToGoogleSheets(CONFIG, SITE_ROOT);
         }
 
         const summaryPath = path.join(BASE_DIR, 'logs', `run-summary-${summary.date}.json`);
@@ -303,4 +360,6 @@ function build() {
     }
 }
 
-build();
+(async () => {
+    await build();
+})();

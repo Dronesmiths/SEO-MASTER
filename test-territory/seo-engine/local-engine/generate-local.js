@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { runValidation } = require('./validate');
+const { syncToGoogleSheets } = require('../google-sheets-sync');
+const { syncWithMasterIndex } = require('../sitemap-utils');
 
 const BASE_DIR = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(BASE_DIR, 'local-config.json'), 'utf8'));
@@ -17,9 +19,15 @@ const SITE_ROOT = path.join(BASE_DIR, '..', '..');
 const LOCK_FILE = path.join(BASE_DIR, '.build-lock');
 const SITEMAP_HASH_PATH = path.join(BASE_DIR, 'logs', 'sitemap-hash.txt');
 
+const DRY_RUN = process.argv.includes('--dry-run');
+
 // --- UTILS ---
 
 function writeAtomic(filePath, content) {
+    if (DRY_RUN) {
+        console.log(`[DRY RUN] Would write to: ${filePath}`);
+        return;
+    }
     const tmpPath = filePath + '.tmp';
     fs.writeFileSync(tmpPath, content);
     fs.renameSync(tmpPath, filePath);
@@ -89,6 +97,7 @@ function syncWithMasterSitemap() {
         masterContent = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
             `  <sitemap>\n    <loc>${CONFIG.domain}/sitemap-core.xml</loc>\n  </sitemap>\n` +
             `  <sitemap>\n    <loc>${localSitemapUrl}</loc>\n  </sitemap>\n` +
+            `  <sitemap>\n    <loc>${CONFIG.domain}/sitemap-blog.xml</loc>\n  </sitemap>\n` +
             `</sitemapindex>`;
     }
 
@@ -125,6 +134,50 @@ function getKeywordHits(keyword, kwMap) {
     return hits;
 }
 
+const ANALYTICS_DIR = path.join(BASE_DIR, '..', 'ANALYTICS');
+const GSC_PULL_PATH = path.join(ANALYTICS_DIR, 'GSC_PULL.json');
+
+// --- GSC STRENGTHENING ---
+
+function strengthenWithGSC() {
+    console.log('--- Analyzing GSC Data for Strengthening Opportunities ---');
+    if (!fs.existsSync(GSC_PULL_PATH)) {
+        console.log('No GSC data found. Skipping.');
+        return [];
+    }
+
+    const gscData = JSON.parse(fs.readFileSync(GSC_PULL_PATH, 'utf8'));
+    const newOpportunities = [];
+
+    // Analyze top and rising queries for geo-intent
+    const queries = [...(gscData.top_queries || []), ...(gscData.rising_queries || [])];
+
+    queries.forEach(q => {
+        const query = typeof q === 'string' ? q : q.query;
+        if (!query) return;
+
+        if (hasGeoIntent(query)) {
+            // Extract city name (basic heuristic: last word or words after 'in'/'at')
+            let potentialCity = '';
+            if (query.includes(' in ')) potentialCity = query.split(' in ')[1];
+            else if (query.includes(' at ')) potentialCity = query.split(' at ')[1];
+            else potentialCity = query.split(' ').pop();
+
+            if (potentialCity && potentialCity.length > 3) {
+                const slug = normalizeSlug(potentialCity);
+                newOpportunities.push({
+                    city: potentialCity.charAt(0).toUpperCase() + potentialCity.slice(1),
+                    state: 'CA', // Default for now
+                    slug: slug,
+                    reason: `GSC Opportunity: ${query}`
+                });
+            }
+        }
+    });
+
+    return newOpportunities;
+}
+
 function writePlaceholder(dir, url, title, h1) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -148,8 +201,10 @@ function writePlaceholder(dir, url, title, h1) {
     writeAtomic(filePath, template);
 }
 
-function build() {
-    if (fs.existsSync(LOCK_FILE)) {
+async function build() {
+    if (DRY_RUN) console.log('*** DRY RUN MODE: No files will be written ***');
+
+    if (!DRY_RUN && fs.existsSync(LOCK_FILE)) {
         const lockTime = parseInt(fs.readFileSync(LOCK_FILE, 'utf8'));
         const ageInMinutes = (Date.now() - lockTime) / (1000 * 60);
         const ttl = CONFIG.lock_ttl_minutes || 30;
@@ -162,16 +217,29 @@ function build() {
             fs.unlinkSync(LOCK_FILE);
         }
     }
-    fs.writeFileSync(LOCK_FILE, Date.now().toString());
+
+    if (!DRY_RUN) fs.writeFileSync(LOCK_FILE, Date.now().toString());
 
     const summary = {
         date: new Date().toISOString().split('T')[0],
         new_cities: 0,
         new_services: 0,
         skipped_duplicates: 0,
-        skipped_low_intent: 0,
+        skipped_low_intent: [],
+        skipped_collisions: [],
         errors: []
     };
+
+    // --- STEP 0: GSC STRENGTHENING ---
+    if (CONFIG.mode !== 'manual') {
+        const opportunities = strengthenWithGSC();
+        opportunities.forEach(opp => {
+            if (!LOCATIONS.find(l => normalizeSlug(l.slug) === opp.slug)) {
+                console.log(`[GSC] Found new opportunity: ${opp.city} (${opp.reason})`);
+                LOCATIONS.push(opp);
+            }
+        });
+    }
 
     try {
         runValidation();
@@ -186,11 +254,19 @@ function build() {
         let locationsInRun = 0;
         const maxLocations = CONFIG.max_new_locations_per_run || 3;
 
+        const seenSlugs = new Set();
+
         for (const loc of LOCATIONS) {
             if (totalPagesBuiltInRun >= maxTotalPages) break;
             if (locationsInRun >= maxLocations) break;
 
             const nCitySlug = normalizeSlug(loc.slug);
+            if (seenSlugs.has(nCitySlug)) {
+                console.warn(`Collision detected: Slug ${nCitySlug} already processed this run. Check locations.json.`);
+                summary.skipped_collisions.push(nCitySlug);
+                continue;
+            }
+            seenSlugs.add(nCitySlug);
             if (nCitySlug !== loc.slug) {
                 console.warn(`Normalized slug: ${loc.slug} -> ${nCitySlug}`);
             }
@@ -201,7 +277,7 @@ function build() {
 
             if (CONFIG.mode !== 'manual' && hits < minHits) {
                 console.log(`Skipping ${loc.city}: Low keyword hits (${hits}/${minHits})`);
-                summary.skipped_low_intent++;
+                summary.skipped_low_intent.push(`${loc.city} (${hits}/${minHits})`);
                 continue;
             }
 
@@ -214,7 +290,7 @@ function build() {
             if (existingUrls.has(cityUrl)) {
                 summary.skipped_duplicates++;
             } else if (totalPagesBuiltInRun < maxTotalPages) {
-                console.log(`Building: ${cityUrl}`);
+                console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityUrl}`);
                 writePlaceholder(path.join(SITE_ROOT, nCitySlug), cityUrl, `${loc.city}, ${loc.state}`, `${loc.city} Local Services`);
                 buildLog.builds.push({ url: cityUrl, type: 'location', timestamp: new Date().toISOString() });
                 newUrls.push(cityUrl);
@@ -241,7 +317,7 @@ function build() {
                 if (existingUrls.has(cityServiceUrl)) {
                     summary.skipped_duplicates++;
                 } else {
-                    console.log(`Building: ${cityServiceUrl}`);
+                    console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityServiceUrl}`);
                     writePlaceholder(path.join(SITE_ROOT, nCitySlug, nSvcSlug), cityServiceUrl, `${svc.name} in ${loc.city}, ${loc.state}`, `${svc.name} - ${loc.city}`);
                     buildLog.builds.push({ url: cityServiceUrl, type: 'city-service', timestamp: new Date().toISOString() });
                     newUrls.push(cityServiceUrl);
@@ -266,7 +342,8 @@ function build() {
             writeAtomic(BUILD_LOG_PATH, JSON.stringify(buildLog, null, 2));
             writeAtomic(SITEMAP_PATH, sitemapContent);
             writeAtomic(SITEMAP_HASH_PATH, getChecksum(sitemapContent));
-            syncWithMasterSitemap();
+            syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-local.xml');
+            await syncToGoogleSheets(CONFIG, SITE_ROOT);
         }
 
         const summaryPath = path.join(BASE_DIR, 'logs', `run-summary-${summary.date}.json`);
@@ -277,10 +354,12 @@ function build() {
         console.error('Build failed:', err.message);
         summary.errors.push(err.message);
     } finally {
-        if (fs.existsSync(LOCK_FILE)) {
+        if (!DRY_RUN && fs.existsSync(LOCK_FILE)) {
             fs.unlinkSync(LOCK_FILE);
         }
     }
 }
 
-build();
+(async () => {
+    await build();
+})();
