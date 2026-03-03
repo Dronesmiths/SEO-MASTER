@@ -343,7 +343,12 @@ async function build() {
             writeAtomic(SITEMAP_PATH, sitemapContent);
             writeAtomic(SITEMAP_HASH_PATH, getChecksum(sitemapContent));
             syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-local.xml');
-            await syncToGoogleSheets(CONFIG, SITE_ROOT);
+            const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Pages");
+            if (newId && newId !== CONFIG.google_sheet_id) {
+                CONFIG.google_sheet_id = newId;
+                fs.writeFileSync(path.join(BASE_DIR, 'local-config.json'), JSON.stringify(CONFIG, null, 4));
+                console.log(`[Local] Updated local-config.json with new Sheet ID: ${newId}`);
+            }
         }
 
         const summaryPath = path.join(BASE_DIR, 'logs', `run-summary-${summary.date}.json`);
