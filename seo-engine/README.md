@@ -37,7 +37,7 @@ To use your own client sheet, update `local-config.json`, `blog-config.json`, an
 - `google_sheet_id` (Share sheet with the service account below)
 
 **Service Account Email:**
-`seo-engine-access@endless-terra-488018.iam.gserviceaccount.com`
+`antigravity-search-console@endless-terra-488018-c4.iam.gserviceaccount.com`
 
 ### 3. Run Commands
 
