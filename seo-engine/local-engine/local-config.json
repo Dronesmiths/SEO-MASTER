@@ -20,5 +20,13 @@
     "lock_ttl_minutes": 30,
     "assisted_min_keyword_hits": 3,
     "google_sheet_id": "1oqN0tKGId4mchnWJTR72EHxeK-ZOVYUVVg3qnDvp-Ik",
-    "google_sheet_tab_name": "Inventory"
+    "google_sheet_tab_name": "Inventory",
+    "google_maps_api_key": "",
+    "maps_feature_flags": {
+        "show_live_map": true,
+        "show_static_map": false,
+        "show_street_view": true,
+        "show_directions": true
+    },
+    "business_address": ""
 }

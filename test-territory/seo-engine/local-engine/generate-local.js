@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { runValidation } = require('./validate');
 const { syncToGoogleSheets } = require('../google-sheets-sync');
 const { syncWithMasterIndex } = require('../sitemap-utils');
+const maps = require('../map-utils');
 
 const BASE_DIR = __dirname;
 const CONFIG = JSON.parse(fs.readFileSync(path.join(BASE_DIR, 'local-config.json'), 'utf8'));
@@ -178,7 +179,7 @@ function strengthenWithGSC() {
     return newOpportunities;
 }
 
-function writePlaceholder(dir, url, title, h1) {
+function writePlaceholder(dir, url, title, h1, locationString) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -186,12 +187,25 @@ function writePlaceholder(dir, url, title, h1) {
     if (fs.existsSync(filePath)) return; // Safety: never overwrite
 
     let template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+
+    // --- MAP COMPONENTS ---
+    let mapHtml = '';
+    const apiKey = CONFIG.google_maps_api_key;
+    const flags = CONFIG.maps_feature_flags || {};
+
+    if (apiKey) {
+        if (flags.show_live_map) mapHtml += maps.generateMapEmbed(apiKey, locationString);
+        if (flags.show_static_map) mapHtml += maps.generateStaticMap(apiKey, locationString);
+        if (flags.show_street_view) mapHtml += maps.generateStreetView(apiKey, locationString);
+        if (flags.show_directions) mapHtml += maps.generateDirectionsLink(locationString, CONFIG.business_address);
+    }
+
     template = template.replace('{{TITLE}}', title)
         .replace('{{H1}}', h1)
         .replace('{{CANONICAL_URL}}', `${CONFIG.domain}${url}`)
         .replace('{{META_DESCRIPTION}}', `Professional ${h1} in ${title}.`)
         .replace('{{INTRO}}', `Looking for ${h1} in ${title}? We provide top-tier solutions tailored for your needs.`)
-        .replace('{{BODY_SECTIONS}}', '<!-- FACTORY:BODY_START -->\n<p>Placeholder content for Factory Engine to replace.</p>\n<!-- FACTORY:BODY_END -->')
+        .replace('{{BODY_SECTIONS}}', `<!-- FACTORY:BODY_START -->\n<div class="content-block">\n    <p>We are proud to serve the ${title} area with professional ${h1} services.</p>\n    ${mapHtml}\n</div>\n<!-- FACTORY:BODY_END -->`)
         .replace('{{FAQ_BLOCK}}', '<!-- FACTORY:FAQ_START -->\n<!-- FACTORY:FAQ_END -->')
         .replace('{{CTA_HEADING}}', `Get Started in ${title}`)
         .replace('{{CTA_TEXT}}', 'Contact our team of experts today.')
@@ -291,7 +305,8 @@ async function build() {
                 summary.skipped_duplicates++;
             } else if (totalPagesBuiltInRun < maxTotalPages) {
                 console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityUrl}`);
-                writePlaceholder(path.join(SITE_ROOT, nCitySlug), cityUrl, `${loc.city}, ${loc.state}`, `${loc.city} Local Services`);
+                const locationString = `${loc.city}, ${loc.state}`;
+                writePlaceholder(path.join(SITE_ROOT, nCitySlug), cityUrl, locationString, `${loc.city} Local Services`, locationString);
                 buildLog.builds.push({ url: cityUrl, type: 'location', timestamp: new Date().toISOString() });
                 newUrls.push(cityUrl);
                 totalPagesBuiltInRun++;
@@ -318,7 +333,8 @@ async function build() {
                     summary.skipped_duplicates++;
                 } else {
                     console.log(`${DRY_RUN ? '[DRY RUN] Would build' : 'Building'}: ${cityServiceUrl}`);
-                    writePlaceholder(path.join(SITE_ROOT, nCitySlug, nSvcSlug), cityServiceUrl, `${svc.name} in ${loc.city}, ${loc.state}`, `${svc.name} - ${loc.city}`);
+                    const locationString = `${loc.city}, ${loc.state}`;
+                    writePlaceholder(path.join(SITE_ROOT, nCitySlug, nSvcSlug), cityServiceUrl, `${svc.name} in ${locationString}`, `${svc.name} - ${loc.city}`, locationString);
                     buildLog.builds.push({ url: cityServiceUrl, type: 'city-service', timestamp: new Date().toISOString() });
                     newUrls.push(cityServiceUrl);
                     totalPagesBuiltInRun++;
