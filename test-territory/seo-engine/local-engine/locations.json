@@ -1,0 +1,42 @@
+[
+    {
+        "city": "Test City A",
+        "state": "CA",
+        "slug": "test-city-a"
+    },
+    {
+        "city": "Test City B",
+        "state": "CA",
+        "slug": "test_city_b_mixed"
+    },
+    {
+        "city": "Test City C",
+        "state": "CA",
+        "slug": "test-city-c"
+    },
+    {
+        "city": "Test City D",
+        "state": "CA",
+        "slug": "test-city-d"
+    },
+    {
+        "city": "Test City E",
+        "state": "CA",
+        "slug": "test-city-e"
+    },
+    {
+        "city": "Test City F",
+        "state": "CA",
+        "slug": "test-city-f"
+    },
+    {
+        "city": "Test City G",
+        "state": "CA",
+        "slug": "test-city-g"
+    },
+    {
+        "city": "Test City H",
+        "state": "CA",
+        "slug": "test-city-h"
+    }
+]

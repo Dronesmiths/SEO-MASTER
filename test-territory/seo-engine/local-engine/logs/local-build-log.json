@@ -1,0 +1,194 @@
+{
+  "builds": [
+    {
+      "url": "/los-angeles-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.822Z"
+    },
+    {
+      "url": "/los-angeles-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.823Z"
+    },
+    {
+      "url": "/palmdale-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/palmdale-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/quartz-hill-ca/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/quartz-hill-ca/local-seo-services/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:08:46.824Z"
+    },
+    {
+      "url": "/test-city-a/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:21:52.756Z"
+    },
+    {
+      "url": "/test-city-a/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.758Z"
+    },
+    {
+      "url": "/test-city-a/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.758Z"
+    },
+    {
+      "url": "/test-city-a/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-b-mixed/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-b-mixed/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-b-mixed/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-b-mixed/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-c/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:21:52.759Z"
+    },
+    {
+      "url": "/test-city-c/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.760Z"
+    },
+    {
+      "url": "/test-city-c/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.760Z"
+    },
+    {
+      "url": "/test-city-c/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:52.760Z"
+    },
+    {
+      "url": "/test-city-d/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:21:59.204Z"
+    },
+    {
+      "url": "/test-city-d/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.205Z"
+    },
+    {
+      "url": "/test-city-d/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.205Z"
+    },
+    {
+      "url": "/test-city-d/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.205Z"
+    },
+    {
+      "url": "/test-city-e/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:21:59.206Z"
+    },
+    {
+      "url": "/test-city-e/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.206Z"
+    },
+    {
+      "url": "/test-city-e/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.206Z"
+    },
+    {
+      "url": "/test-city-e/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:21:59.206Z"
+    },
+    {
+      "url": "/test-city-f/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:24:58.516Z"
+    },
+    {
+      "url": "/test-city-f/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:24:58.516Z"
+    },
+    {
+      "url": "/test-city-f/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:24:58.516Z"
+    },
+    {
+      "url": "/test-city-f/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:24:58.516Z"
+    },
+    {
+      "url": "/test-city-g/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:25:54.759Z"
+    },
+    {
+      "url": "/test-city-g/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:25:54.760Z"
+    },
+    {
+      "url": "/test-city-g/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:25:54.760Z"
+    },
+    {
+      "url": "/test-city-g/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:25:54.760Z"
+    },
+    {
+      "url": "/test-city-h/",
+      "type": "location",
+      "timestamp": "2026-03-03T05:26:15.668Z"
+    },
+    {
+      "url": "/test-city-h/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:26:15.668Z"
+    },
+    {
+      "url": "/test-city-h/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:26:15.668Z"
+    },
+    {
+      "url": "/test-city-h/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T05:26:15.668Z"
+    }
+  ]
+}

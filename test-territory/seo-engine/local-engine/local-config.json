@@ -15,8 +15,5 @@
     ],
     "max_new_locations_per_run": 3,
     "max_new_services_per_location": 5,
-    "max_total_new_pages_per_run": 25,
-    "geo_radius_limit_miles": 40,
-    "lock_ttl_minutes": 30,
-    "assisted_min_keyword_hits": 3
+    "geo_radius_limit_miles": 40
 }

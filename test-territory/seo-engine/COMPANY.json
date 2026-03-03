@@ -1,0 +1,22 @@
+{
+  "company_name": "Test Company",
+  "domain": "https://example.com",
+  "brand_tone": "friendly, confident, non-salesy",
+  "primary_location": "United States",
+  "services": [
+    "SEO Services",
+    "Website Development"
+  ],
+  "unique_value_props": [
+    "Fast deployment",
+    "Data-driven growth"
+  ],
+  "primary_cta": {
+    "label": "Get Started",
+    "url": "https://example.com/contact/"
+  },
+  "secondary_cta": {
+    "label": "Learn More",
+    "url": "https://example.com/services/"
+  }
+}

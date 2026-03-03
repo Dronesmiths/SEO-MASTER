@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Svc 1",
+        "slug": "svc-1"
+    },
+    {
+        "name": "Svc 2",
+        "slug": "Svc-2-Mixed"
+    },
+    {
+        "name": "Svc 3",
+        "slug": "svc-3"
+    }
+]

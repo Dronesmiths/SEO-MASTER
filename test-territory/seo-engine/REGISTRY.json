@@ -1,0 +1,46 @@
+{
+    "pages": [
+        {
+            "slug": "eat-strategy-checklist",
+            "url": "/blog/eat-strategy-checklist/",
+            "title": "Essential E-A-T Checklist for 2026",
+            "pillar": "eat-strategy",
+            "created": "2026-02-20"
+        },
+        {
+            "slug": "improving-eat-score",
+            "url": "/blog/improving-eat-score/",
+            "title": "How to Improve Your E-A-T Score",
+            "pillar": "eat-strategy",
+            "created": "2026-02-20"
+        },
+        {
+            "slug": "local-seo-visibility",
+            "url": "/blog/local-seo-visibility/",
+            "title": "Maximizing Local Visibility in 2026",
+            "pillar": "local-seo",
+            "created": "2026-02-20"
+        },
+        {
+            "slug": "hyper-local-keywords",
+            "url": "/blog/hyper-local-keywords/",
+            "title": "Hyper-Local Keyword Mapping for 2026",
+            "pillar": "local-seo",
+            "created": "2026-02-20"
+        },
+        {
+            "slug": "core-web-vitals-2026",
+            "url": "/blog/core-web-vitals-2026/",
+            "title": "Core Web Vitals Optimization Guide 2026",
+            "pillar": "technical-seo",
+            "created": "2026-02-20"
+        },
+        {
+            "slug": "semantic-html-seo",
+            "url": "/blog/semantic-html-seo/",
+            "title": "Semantic HTML for Technical SEO 2026",
+            "pillar": "technical-seo",
+            "created": "2026-02-20"
+        }
+    ]
+}
