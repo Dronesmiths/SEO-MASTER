@@ -48,4 +48,52 @@
     <loc>https://example.com/test-city-c/svc-3/</loc>
     <lastmod>2026-03-03</lastmod>
   </url>
+  <url>
+    <loc>https://example.com/test-city-d/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-d/svc-1/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-d/svc-2-mixed/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-d/svc-3/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-e/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-e/svc-1/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-e/svc-2-mixed/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-e/svc-3/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-f/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-f/svc-1/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-f/svc-2-mixed/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/test-city-f/svc-3/</loc>
+    <lastmod>2026-03-03</lastmod>
+  </url>
 </urlset>

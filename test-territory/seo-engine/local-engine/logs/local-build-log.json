@@ -59,6 +59,66 @@
       "url": "/test-city-c/svc-3/",
       "type": "city-service",
       "timestamp": "2026-03-03T16:07:57.746Z"
+    },
+    {
+      "url": "/test-city-d/",
+      "type": "location",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-d/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-d/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-d/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-e/",
+      "type": "location",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-e/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-e/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-e/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-f/",
+      "type": "location",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-f/svc-1/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-f/svc-2-mixed/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
+    },
+    {
+      "url": "/test-city-f/svc-3/",
+      "type": "city-service",
+      "timestamp": "2026-03-03T16:16:32.058Z"
     }
   ]
 }

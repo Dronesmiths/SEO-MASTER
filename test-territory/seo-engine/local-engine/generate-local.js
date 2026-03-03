@@ -360,11 +360,18 @@ async function build() {
             writeAtomic(SITEMAP_PATH, sitemapContent);
             writeAtomic(SITEMAP_HASH_PATH, getChecksum(sitemapContent));
             syncWithMasterIndex(SITE_ROOT, CONFIG.domain, 'sitemap-local.xml');
-            const newId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Locations");
-            if (newId && newId !== CONFIG.google_sheet_id) {
-                CONFIG.google_sheet_id = newId;
+
+            // Sync Locations
+            const locId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Locations");
+
+            // Sync Services
+            const svcId = await syncToGoogleSheets(CONFIG, SITE_ROOT, "Services");
+
+            const finalId = locId || svcId;
+            if (finalId && finalId !== CONFIG.google_sheet_id) {
+                CONFIG.google_sheet_id = finalId;
                 fs.writeFileSync(path.join(BASE_DIR, 'local-config.json'), JSON.stringify(CONFIG, null, 4));
-                console.log(`[Local] Updated local-config.json with new Sheet ID: ${newId}`);
+                console.log(`[Local] Updated local-config.json with new Sheet ID: ${finalId}`);
             }
         }
 

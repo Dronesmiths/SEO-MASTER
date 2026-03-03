@@ -92,7 +92,8 @@ async function syncToGoogleSheets(config, siteRoot, tabName = "Inventory") {
         // --- COLLECT PAGES FROM SITEMAPS ---
         // Map tab names to sitemap sources for filtering
         const sourceMap = {
-            'Locations': 'local',
+            'Locations': 'location',
+            'Services': 'city-service',
             'Blogs': 'blog',
             'Newsletters': 'newsletter',
             'Core': 'core'

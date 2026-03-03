@@ -2,7 +2,7 @@
   "date": "2026-03-03",
   "new_cities": 3,
   "new_services": 9,
-  "skipped_duplicates": 0,
+  "skipped_duplicates": 12,
   "skipped_low_intent": [],
   "skipped_collisions": [],
   "errors": []
